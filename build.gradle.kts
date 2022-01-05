@@ -1,13 +1,25 @@
 plugins {
+    application
     kotlin("jvm") version "1.6.10"
+    id("com.github.johnrengelman.shadow") version "7.0.0"
 }
 
 group = "com.seyedjafariy"
-version = "1.0-SNAPSHOT"
+version = "1.0"
 
 repositories {
     google()
     mavenCentral()
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+application {
+    mainClass.set("App")
 }
 
 dependencies {
@@ -28,4 +40,12 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.2.10")
     implementation("org.kodein.di:kodein-di:7.10.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")
+}
+
+tasks{
+    shadowJar {
+        manifest {
+            attributes(Pair("App", "App"))
+        }
+    }
 }
